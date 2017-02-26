@@ -1,3 +1,7 @@
 # Directories to ignore #
 #########################
 /env/
+
+# File Types to ignore #
+#########################
+*.pyc
