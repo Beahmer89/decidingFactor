@@ -5,7 +5,9 @@
     </head>
     <body>
         <h1>Restaurant Picker</h1>
-        <p>{{ restaurant_name }}</p>
-        <p>{{ restaurant_type }}</p>
+        {% for restaurant in restaurants %}
+            <p>{{ restaurant.name }}</p>
+            <p>{{ restaurant.price }}</p>
+        {% endfor %}
     </body>
 </html>
