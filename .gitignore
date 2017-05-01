@@ -3,5 +3,9 @@
 /env/
 
 # File Types to ignore #
-#########################
+########################
 *.pyc
+
+# Other File to ignore #
+########################
+build_env
