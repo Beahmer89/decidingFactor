@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from restaurant.forms import SignUpForm
 import os
 import requests
 
 # Create your views here.
 def index(request):
-
     access_info = get_access()
     if access_info:
         restaurants = make_api_call(access_info)
@@ -14,6 +14,20 @@ def index(request):
 
     print(len(restaurants['businesses']))
     return render(request, 'index.html', {'restaurants': restaurants['businesses']})
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('index')
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})
 
 
 def get_access():
