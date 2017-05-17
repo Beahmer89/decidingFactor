@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="{% static 'bootstrap.min.css' %}" rel='stylesheet'>
+        <title>Deciding Factor Signup</title>
+    </head>
+    <body>
+        <div class='container well'>
+            <div class='col-xs-offset-4 col-xs-4'>
+                <h1>Sign Up</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <p>
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.hlp_text }}
+                    </p>
+                    {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                    {% endfor %}
+                    <button type="submit">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
