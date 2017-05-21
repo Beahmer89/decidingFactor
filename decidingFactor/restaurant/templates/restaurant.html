@@ -3,7 +3,7 @@
 <html>
     <head>
         <link href="{% static 'bootstrap.min.css' %}" rel='stylesheet'>
-        <title>Deciding Factor Signup</title>
+        <title>Restaurant Picker</title>
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-static-top">
@@ -17,22 +17,22 @@
             </div>
         </div>
         <div class='container well'>
-            <div class='col-xs-offset-4 col-xs-4'>
-                <h1>Sign Up</h1>
-                <form method="post">
-                    {% csrf_token %}
-                    {% for field in form %}
-                    <p>
-                        {{ field.label_tag }}
-                        {{ field }}
-                    </p>
-                    {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
-                    {% endfor %}
-                    {% endfor %}
-                    <button type="submit">Sign Up</button>
-                </form>
-            </div>
+            <h1>Restaurant Picker</h1>
+            {% for restaurant in restaurants %}
+                <div class='panel panel-default'>
+                    <h2 class='panel-body'>{{ restaurant.name }}</h2>
+                </div>
+                <div class='panel panel-default'>
+                    <table>
+                        <tr>
+                            <th>Price</th>
+                        </tr>
+                        <tr>
+                            <th>{{ restaurant.price }}</th>
+                        </tr>
+                    </table>
+                </div>
+            {% endfor %}
         </div>
     </body>
 </html>
