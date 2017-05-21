@@ -5,6 +5,9 @@ import requests
 
 # Create your views here.
 def index(request):
+    return render(request, 'index.html')
+
+def restaurant(request):
     access_info = get_access()
     if access_info:
         restaurants = make_api_call(access_info)
@@ -13,7 +16,7 @@ def index(request):
         return
 
     print(len(restaurants['businesses']))
-    return render(request, 'index.html', {'restaurants': restaurants['businesses']})
+    return render(request, 'restaurant.html', {'restaurants': restaurants['businesses']})
 
 def signup(request):
     if request.method == 'POST':
