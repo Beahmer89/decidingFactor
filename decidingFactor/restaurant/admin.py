@@ -1,8 +1,9 @@
 from django.contrib import admin
-from models import Location, SearchHistory, Restaurant, VisitHistory
+
+import restaurant.models as models
 
 # Register your models here.
-admin.site.register(Location)
-admin.site.register(SearchHistory)
-admin.site.register(Restaurant)
-admin.site.register(VisitHistory)
+admin.site.register(models.Location)
+admin.site.register(models.SearchHistory)
+admin.site.register(models.Restaurant)
+admin.site.register(models.VisitHistory)
