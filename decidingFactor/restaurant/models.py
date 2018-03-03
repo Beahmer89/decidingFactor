@@ -25,6 +25,7 @@ class SearchHistory(models.Model):
     def __str__(self):
         return self.search_terms
 
+
 class Restaurant(models.Model):
     restaurant_id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                                      editable=False)
@@ -35,13 +36,15 @@ class Restaurant(models.Model):
     def __str__(self):
         return self.name
 
+
 class VisitHistory(models.Model):
-    RATING = (('undecided', 'Undecided'), ('hate','Hated'),
-              ('like','Liked'), ('love','Loved'))
+    RATING = (('undecided', 'Undecided'), ('hate', 'Hated'),
+              ('like', 'Liked'), ('love', 'Loved'))
     user_id = models.ForeignKey(User)
     search_id = models.ForeignKey(SearchHistory)
     restaurant_id = models.ForeignKey(Restaurant)
-    rating = models.CharField(max_length=10, default='undecided', choices=RATING)
+    rating = models.CharField(max_length=10, default='undecided',
+                              choices=RATING)
     last_visted = models.DateField(default='null')
 
     def __str__(self):
