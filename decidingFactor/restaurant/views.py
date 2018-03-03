@@ -1,22 +1,27 @@
+from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from restaurant.forms import SignUpForm
+
+import logging
 import os
 import requests
+
+logger = logging.getLogger(__name__)
+
+HTTP_RETRIES = 3
+TIMEOUT = 20
+
 
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
 
-def restaurant(request):
-    access_info = get_access()
-    if access_info:
-        restaurants = make_api_call(access_info)
-    else:
-        print("ERROR: Could not obtain YELP access information")
-        return
 
-    print(len(restaurants['businesses']))
-    return render(request, 'restaurant.html', {'restaurants': restaurants['businesses']})
+def restaurant(request):
+    restaurants = _make_api_call()
+    return render(request, 'restaurant.html',
+                  {'restaurants': restaurants['businesses']})
+
 
 def signup(request):
     if request.method == 'POST':
@@ -33,52 +38,36 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 
-def get_access():
-    token_url = os.getenv('YELP_HOST')
-
-    payload = {'client_id': os.getenv('YELP_CLIENT'),
-               'client_secret': os.getenv('YELP_SECRET')}
-    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-
-    if payload['client_id'] and payload['client_secret']:
-        response = http_request(url=token_url, headers=headers,
-                                payload=payload, request_type='POST')
-        return response
-    else:
-        return None
-
-def make_api_call(access_info):
-    url = os.getenv('YELP_API_HOST')
-    auth = "{} {}".format(access_info['token_type'],
-                          access_info['access_token'])
+def _make_api_call():
+    """ Setup the request needed to be made for YELP to get information"""
+    auth = "bearer {}".format(os.environ.get('YELP_API_KEY'))
     headers = {'Authorization': auth}
-    payload = {'location': 19128, 'term': 'vegan'}
+    # hard coded for now until page gets working
+    query_params = {'location': 19128, 'term': 'vegan'}
     response = http_request(url=os.getenv('YELP_API_HOST'), headers=headers,
-                            payload=payload, request_type='GET')
+                            query_params=query_params)
     return response
 
-def http_request(url, payload, headers, request_type):
+
+def http_request(url, headers, query_params={}, body={}, request_type='GET'):
     """This function is meant to be a generic in order to execute different
-    types of HTTP requests. For now in this project, we only need a GET and
-    POST in order to get information from YELP. Include type param if other
+    types of HTTP requests. For now in this project, we only need a GET in
+    order to get information from YELP. Include type param if other
     requests are needed.
 
-    If there is a payload it will be a POST otherwise GET is expected.
-
     """
-    if request_type == 'POST':
-        response = requests.post(url, headers=headers, data=payload)
-    elif request_type == 'GET':
-        response = requests.get(url, headers=headers, params=payload)
-    else:
-        print("UNEXPECTED REQUEST TYPE")
-
-    try:
-        status_code = response.status_code
-
-        if status_code == 200:
+    for x in range(0, HTTP_RETRIES):
+        response = requests.request(request_type, url,
+                                    params=query_params, headers=headers,
+                                    data=body, timeout=TIMEOUT)
+        if 200 <= response.status_code < 400:
             return response.json()
-        else:
+        elif response.status_code in [423, 429]:
+            logger.error('Rate limited')
+        elif 400 <= response.status_code < 500:
+            logger.error('400 level error: {}'.format(response.reason()))
             response.raise_for_status()
-    except Exception as error:
-        print("Error getting status code: {}".format(error))
+        elif response.status_code >= 500:
+            logger.error('500 level error: {}'.format(response.reason()))
+
+    # Raise final error
