@@ -22,15 +22,18 @@
                 <form method="post">
                     {% csrf_token %}
                     {% for field in form %}
-                    <p>
-                        {{ field.label_tag }}
+                    <div>
+                        <label for="{{ field.label }}">{{field.label_tag }}
                         {{ field }}
-                    </p>
-                    {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
+                        {% if field.field.required %}
+                            <small style="color: red">*</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                    </div>
                     {% endfor %}
-                    {% endfor %}
-                    <button type="submit">Sign Up</button>
+                    <button class="btn btn-primary" type="submit">Sign Up</button>
                 </form>
             </div>
         </div>
