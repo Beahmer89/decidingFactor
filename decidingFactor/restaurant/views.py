@@ -1,6 +1,6 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
-from restaurant.forms import SignUpForm
+from restaurant.forms import SearchForm, SignUpForm
 
 import logging
 import os
@@ -18,9 +18,18 @@ def index(request):
 
 
 def restaurant(request):
-    restaurants = _make_api_call()
+    restaurants = {}
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            terms = form.cleaned_data.get('terms')
+            zip_code = form.cleaned_data.get('zip_code')
+            restaurants = _make_api_call(terms, zip_code)
+    else:
+        form = SearchForm()
+
     return render(request, 'restaurant.html',
-                  {'restaurants': restaurants['businesses']})
+                  {'restaurants': restaurants.get('businesses'), 'form': form})
 
 
 def signup(request):
@@ -38,12 +47,12 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 
-def _make_api_call():
+def _make_api_call(terms, zip_code):
     """ Setup the request needed to be made for YELP to get information"""
     auth = "bearer {}".format(os.environ.get('YELP_API_KEY'))
     headers = {'Authorization': auth}
     # hard coded for now until page gets working
-    query_params = {'location': 19128, 'term': 'vegan'}
+    query_params = {'location': zip_code, 'term': terms}
     response = http_request(url=os.getenv('YELP_API_HOST'), headers=headers,
                             query_params=query_params)
     return response
