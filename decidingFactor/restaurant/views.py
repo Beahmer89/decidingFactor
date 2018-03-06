@@ -53,12 +53,12 @@ def _make_api_call(terms, zip_code):
     headers = {'Authorization': auth}
     # hard coded for now until page gets working
     query_params = {'location': zip_code, 'term': terms}
-    response = http_request(url=os.getenv('YELP_API_HOST'), headers=headers,
+    response = _http_request(url=os.getenv('YELP_API_HOST'), headers=headers,
                             query_params=query_params)
     return response
 
 
-def http_request(url, headers, query_params={}, body={}, request_type='GET'):
+def _http_request(url, headers, query_params={}, body={}, request_type='GET'):
     """This function is meant to be a generic in order to execute different
     types of HTTP requests. For now in this project, we only need a GET in
     order to get information from YELP. Include type param if other
