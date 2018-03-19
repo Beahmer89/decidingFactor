@@ -30,22 +30,30 @@
                 </form>
             </div>
         </div>
-        <div class='container well'>
-            {% for restaurant in restaurants %}
-                <div class='panel panel-default'>
-                    <h2 class='panel-body'>{{ restaurant.name }}</h2>
-                </div>
-                <div class='panel panel-default'>
-                    <table>
-                        <tr>
-                            <th>Price</th>
-                        </tr>
-                        <tr>
-                            <th>{{ restaurant.price }}</th>
-                        </tr>
-                    </table>
-                </div>
-            {% endfor %}
+        {% if restaurants %}
+        <div class="container">
+            <div class="row">
+                {% for restaurant in restaurants %}
+                    <div class="col-sm-6">
+                        <div class="thumbnail text-center">
+                                <div class="caption">
+                                    <h4> Pick: {{ forloop.counter }} </h4>
+                                </div>
+                                <div>
+                                    <h2 class='card-title'>{{ restaurant.name }}</h2>
+                                    <p class="card-text">Price {{ restaurant.price }}</p>
+                                    <a href="#" class="btn btn-success">Going Here!</a>
+                                    <a href="#" class="btn btn-info">Maybe Later</a>
+                                    <a href="#" class="btn btn-danger">Bad Suggestion</a>
+                                </div>
+                                <div class="text-muted">
+                                    Last Visted: 
+                                </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
+        {% endif %}
     </body>
 </html>
