@@ -19,6 +19,7 @@ class Location(models.Model):
 class SearchHistory(models.Model):
     search_id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                                  editable=False)
+    user_id = models.ForeignKey(User, null=True)
     location_id = models.ForeignKey(Location)
     search_terms = models.CharField(max_length=30, null=True, default=None)
 
@@ -29,8 +30,8 @@ class SearchHistory(models.Model):
 class Restaurant(models.Model):
     restaurant_id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                                      editable=False)
+    location_id = models.ForeignKey(Location, null=True)
     name = models.CharField(max_length=50, null=True, default=None)
-    restaurant_type = models.CharField(max_length=50, null=True, default=None)
     price = models.CharField(max_length=10, null=True, default=None)
 
     def __str__(self):
@@ -38,11 +39,11 @@ class Restaurant(models.Model):
 
 
 class VisitHistory(models.Model):
-    RATING = (('undecided', 'Undecided'), ('hate', 'Hated'),
+    RATING = (('selected', 'Selected'), ('undecided', 'Undecided'), ('hate', 'Hated'),
               ('like', 'Liked'), ('love', 'Loved'))
     user_id = models.ForeignKey(User)
-    search_id = models.ForeignKey(SearchHistory)
     restaurant_id = models.ForeignKey(Restaurant)
+    search_id = models.ForeignKey(SearchHistory)
     rating = models.CharField(max_length=10, default='undecided',
                               choices=RATING)
     last_visted = models.DateField(default='null')
