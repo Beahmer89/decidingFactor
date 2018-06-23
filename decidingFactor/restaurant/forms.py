@@ -14,4 +14,4 @@ class SignUpForm(UserCreationForm):
 
 class SearchForm(forms.Form):
     terms = forms.CharField(label='Search', max_length=30)
-    zip_code = forms.CharField(label='Zip', max_length=5)
+    city = forms.CharField(label='City', max_length=25)
