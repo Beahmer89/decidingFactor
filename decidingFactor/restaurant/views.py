@@ -23,8 +23,7 @@ def restaurant(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             terms = form.cleaned_data.get('terms')
-            zip_code = form.cleaned_data.get('zip_code')
-            restaurants = _make_api_call(terms, zip_code)
+            city = form.cleaned_data.get('city')
     else:
         form = SearchForm()
 
@@ -46,37 +45,5 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
-
-def _make_api_call(terms, zip_code):
-    """ Setup the request needed to be made for YELP to get information"""
-    auth = "bearer {}".format(os.environ.get('YELP_API_KEY'))
-    headers = {'Authorization': auth}
-    # hard coded for now until page gets working
-    query_params = {'location': zip_code, 'term': terms}
-    response = _http_request(url=os.getenv('YELP_API_HOST'), headers=headers,
-                            query_params=query_params)
-    return response
-
-
-def _http_request(url, headers, query_params={}, body={}, request_type='GET'):
-    """This function is meant to be a generic in order to execute different
-    types of HTTP requests. For now in this project, we only need a GET in
-    order to get information from YELP. Include type param if other
-    requests are needed.
-
-    """
-    for x in range(0, HTTP_RETRIES):
-        response = requests.request(request_type, url,
-                                    params=query_params, headers=headers,
-                                    data=body, timeout=TIMEOUT)
-        if 200 <= response.status_code < 400:
-            return response.json()
-        elif response.status_code in [423, 429]:
-            logger.error('Rate limited')
-        elif 400 <= response.status_code < 500:
-            logger.error('400 level error: {}'.format(response.reason()))
-            response.raise_for_status()
-        elif response.status_code >= 500:
-            logger.error('500 level error: {}'.format(response.reason()))
-
-    # Raise final error
+def _get_restaurants(location, terms):
+    pass
