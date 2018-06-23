@@ -16,10 +16,7 @@ class Location(models.Model):
 class SearchHistory(models.Model):
     search_id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                                  editable=False)
-<<<<<<< Updated upstream
-=======
     user_id = models.ForeignKey(User)
->>>>>>> Stashed changes
     location_id = models.ForeignKey(Location)
     search_terms = models.CharField(max_length=30, null=True, default=None)
 
@@ -30,10 +27,7 @@ class SearchHistory(models.Model):
 class Restaurant(models.Model):
     restaurant_id = models.UUIDField(primary_key=True, default=uuid.uuid4,
                                      editable=False)
-<<<<<<< Updated upstream
-=======
     location_id = models.ForeignKey(Location)
->>>>>>> Stashed changes
     name = models.CharField(max_length=50, null=True, default=None)
     restaurant_type = models.CharField(max_length=50, null=True, default=None)
     price = models.CharField(max_length=10, null=True, default=None)
