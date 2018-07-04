@@ -5,6 +5,7 @@
 # File Types to ignore #
 ########################
 *.pyc
+.coverage
 
 # Other File to ignore #
 ########################

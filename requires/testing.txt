@@ -1,2 +1,4 @@
 -r installation.txt
+coverage
 flake8
+mock

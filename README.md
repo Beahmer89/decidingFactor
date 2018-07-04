@@ -13,10 +13,13 @@ This program will be used to:
 ## Import Environment variables
 |Variable Name      | Definition
 |-------------------|------------
-|**YELP\_API\_HOST**| Yelp url used to retrieve restaurants from Yelp
 |**YELP\_API\_KEY** | API key generaged from Yelp to be able to authorize use
 
 ## How to contribute
     virtualenv --python=python3 env
     pip install -r requires/testing.txt -i https://pypi.python.org/simple/
     python manage.py test restaurant
+
+## How to verify code coverage
+    coverage run --source='.' manage.py test restaurant/tests/
+    coverage report
