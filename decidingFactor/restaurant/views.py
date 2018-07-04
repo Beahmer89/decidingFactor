@@ -1,10 +1,10 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from restaurant.forms import SearchForm, SignUpForm
+from restaurant import yelp
 
 import logging
-import os
-import requests
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +24,7 @@ def restaurant(request):
         if form.is_valid():
             terms = form.cleaned_data.get('terms')
             city = form.cleaned_data.get('city')
+            restaurants = _find_businesses(location=city, terms=terms)
     else:
         form = SearchForm()
 
@@ -45,5 +46,15 @@ def signup(request):
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
 
-def _get_restaurants(location, terms):
+
+def _find_businesses(location, terms):
+    try:
+        response = yelp.find_businesses(location=location, term=terms)
+        restaurants = json.loads(response.content.decode('utf-8'))
+    except json.decoder.JSONDecodeError:
+        restaurants = {}
+
+    return restaurants
+
+
     pass
