@@ -60,3 +60,30 @@ class DatabaseFunctionTests(TestCase):
                                                  location_id=saved_loc.pk)
         self.assertEquals(saved_loc.city, location)
         self.assertEquals(search_terms.search_terms, terms)
+
+
+class VisitFunctionTests(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='Death', email='reaper@grim.com', password='Muerte666')
+        self.user1 = User.objects.create_user(
+            username='Nightman', email='nightman123@gmail.com',
+            password='nightmancometh123')
+        self.location = Location.objects.create(city='Philadelphia')
+        self.portland = Location.objects.create(city='Portland')
+        self.search = SearchHistory.objects.create(user_id=self.user,
+                                                   location_id=self.portland,
+                                                   search_terms="vegan")
+        helpers.create_visit_history(self.location, self.search, self.user)
+
+    def test_vist_history_returned_with_correct_data(self):
+        history = db_functions.get_user_visit_history(self.user)
+
+        self.assertEquals(len(history), len(helpers.RESTAURANTS))
+        for restaurant in history:
+            self.assertTrue(helpers.RESTAURANTS[restaurant['name']])
+
+    def test_visit_history_returns_empty_for_user_with_no_history(self):
+        history = db_functions.get_user_visit_history(self.user1)
+        self.assertEquals(len(history), 0)

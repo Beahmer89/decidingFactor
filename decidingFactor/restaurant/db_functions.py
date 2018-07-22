@@ -24,3 +24,9 @@ def save_form_info(user_id, search_location, terms):
     search = models.SearchHistory(user_id=user_id, location_id=location,
                                   search_terms=terms)
     search.save()
+
+
+def get_user_visit_history(user_id):
+    return models.Restaurant.objects.filter(
+        visithistory__user_id=user_id).values('restaurant_type', 'name',
+                                              'visithistory__rating')
