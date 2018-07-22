@@ -4,10 +4,10 @@ from django.test import TestCase
 
 from restaurant import db_functions
 from restaurant.models import Location, SearchHistory
+from restaurant.tests import helpers
 
 
-# Create your tests here.
-class DatabaseFunctionTests(TestCase):
+class SearchFunctionTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username='Death', email='reaper@grim.com', password='Muerte666')
@@ -38,7 +38,7 @@ class DatabaseFunctionTests(TestCase):
         with self.assertRaises(exceptions.ObjectDoesNotExist):
             Location.objects.get(city=location)
 
-        db_functions.save_form_info(self.user, location, terms)
+        db_functions.save_search_form_info(self.user, location, terms)
 
         saved_loc = Location.objects.get(city=location)
         search_terms = SearchHistory.objects.get(user_id=self.user.pk,
@@ -46,14 +46,14 @@ class DatabaseFunctionTests(TestCase):
         self.assertEquals(saved_loc.city, location)
         self.assertEquals(search_terms.search_terms, terms)
 
-    def test_save_form_info_succeeds_with_location_already_existing(self):
+    def test_save_search_form_info_succeeds_with_existing_location(self):
         terms = "vegan pizza"
         location = "Pittsburgh"
 
         saved_loc = Location.objects.get(city=location)
         self.assertEquals(saved_loc.city, location)
 
-        db_functions.save_form_info(self.user, location, terms)
+        db_functions.save_search_form_info(self.user, location, terms)
 
         saved_loc = Location.objects.get(city=location)
         search_terms = SearchHistory.objects.get(user_id=self.user.pk,
