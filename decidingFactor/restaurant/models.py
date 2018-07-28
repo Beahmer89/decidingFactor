@@ -37,14 +37,20 @@ class Restaurant(models.Model):
 
 
 class VisitHistory(models.Model):
-    RATING = (('undecided', 'Undecided'), ('hate', 'Hated'),
-              ('like', 'Liked'), ('love', 'Loved'))
+    HATE = 'HATE'
+    LIKE = 'LIKE'
+    LOVE = 'LOVE'
+    SAVE = 'SAVE'
+    UNDECIDED = 'UNDECIDED'
+    RATING = ((HATE, 'Hated'), (LIKE, 'Liked'), (LOVE, 'Loved'),
+              (UNDECIDED, 'Undecided'), (SAVE, 'Saved'))
+
     user_id = models.ForeignKey(User)
     search_id = models.ForeignKey(SearchHistory)
     restaurant_id = models.ForeignKey(Restaurant)
     rating = models.CharField(max_length=10, default='undecided',
                               choices=RATING)
-    last_visted = models.DateField(default='null')
+    last_visted = models.DateField(null=True, default=None)
 
     def __str__(self):
         return self.rating
