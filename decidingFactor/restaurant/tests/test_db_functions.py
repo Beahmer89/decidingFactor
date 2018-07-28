@@ -125,3 +125,49 @@ class RestaurantFunctionTests(TestCase):
         count = Restaurant.objects.filter(name=name).count()
         self.assertEquals(count, 0)
 
+    def test_db_integrity_error_is_caught_and_visit_history_not_saved(self):
+        name = 'Horrible'
+        restaurant_type = 'soup'
+        price = '$'
+
+        result = db_functions.save_restaurant_selection(name, None, price,
+                                                        restaurant_type)
+        visit = db_functions.save_visit_selection(self.user, self.search,
+                                                  None, 'undecided')
+
+        self.assertFalse(visit)
+
+        count = Restaurant.objects.filter(name=name).count()
+        self.assertEquals(count, 0)
+
+    def test_visit_history_saved(self):
+        name = 'Lunas Paw Spot'
+        restaurant_type = 'Chinese'
+        price = '$$'
+
+        result = db_functions.save_restaurant_selection(name, self.location,
+                                                        price, restaurant_type)
+
+        visit = db_functions.save_visit_selection(self.user, self.search,
+                                                  result, 'undecided')
+
+        self.assertTrue(visit)
+
+        count = Restaurant.objects.filter(visithistory__user_id=self.user).count()
+        self.assertEquals(count, 1)
+
+    def test_visit_history_saved_not_saved_with_unknown_rating(self):
+        name = 'Not Great'
+        restaurant_type = 'Bulgarian'
+        price = '$$'
+
+        result = db_functions.save_restaurant_selection(name, self.location,
+                                                        price, restaurant_type)
+
+        visit = db_functions.save_visit_selection(self.user, self.search,
+                                                  result, 'never again')
+
+        self.assertFalse(visit)
+
+        count = Restaurant.objects.filter(visithistory__user_id=self.user).count()
+        self.assertEquals(count, 0)

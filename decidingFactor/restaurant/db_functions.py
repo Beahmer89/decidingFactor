@@ -69,6 +69,51 @@ def save_restaurant_selection(name, location_id, price, restaurant_type):
 
 
 def get_user_visit_history(user_id):
+    """
+    Retrieves a users visit history. Includes all places regardless of rating.
+
+    :param int user_id: logged in user id
+
+    :return: VisitHistory object
+    """
     return models.Restaurant.objects.filter(
         visithistory__user_id=user_id).values('restaurant_type', 'name',
                                               'visithistory__rating')
+
+
+def save_visit_selection(user_id, search_id, restaurant_id, rating):
+    """
+    Record the users choice on a particular restaurant. This function handles
+    the initial user selection of restaurants. The user can pick from the
+    following:
+        - They are going to the restaurnat
+        - Do not like the place
+        - Like the place, but will save it for another time
+
+    If a selection that does not equal any of the specified ratings,
+    the request is ignored. Other wise a boolean response is returned
+    indicating whether the record was created.
+
+    :param str user_id: UUID of user
+    :param str restaurant_id: UUID of restaurant
+    :param str search_id: UUID of search user entered to find these results
+    :param str rating: The users rating of restaurant
+
+    :return: True or False
+    """
+    choices = [models.VisitHistory.HATE, models.VisitHistory.SAVE,
+               models.VisitHistory.UNDECIDED]
+    if rating.upper() not in choices:
+        return False
+
+    try:
+        restaurant, created = models.VisitHistory.objects.get_or_create(
+            user_id=user_id,
+            search_id=search_id,
+            restaurant_id=restaurant_id,
+            rating=rating,
+            last_visted=datetime.datetime.now())
+    except db.IntegrityError as error:
+        return False
+
+    return created
