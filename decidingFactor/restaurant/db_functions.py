@@ -1,3 +1,6 @@
+import datetime
+
+from django import db
 from django.core import exceptions
 
 from restaurant import models
@@ -40,6 +43,29 @@ def save_search_form_info(user_id, search_location, terms):
     search = models.SearchHistory(user_id=user_id, location_id=location,
                                   search_terms=terms)
     search.save()
+
+
+def save_restaurant_selection(name, location_id, price, restaurant_type):
+    """
+    Adds the given restaurant to the database.
+
+    :param str location_id: location uuid of where restaurant is located
+    :param str name: The name of the restaurant
+    :param str price: Money signs indicating price range
+    :param str restaurant_type: Category of restaurant
+
+    :return: Restaurant object or None
+    """
+    try:
+        restaurant, created = models.Restaurant.objects.get_or_create(
+            name=name,
+            location_id=location_id,
+            restaurant_type=restaurant_type,
+            price=price)
+    except db.IntegrityError as error:
+        return None
+
+    return restaurant
 
 
 def get_user_visit_history(user_id):

@@ -3,7 +3,7 @@ from django.core import exceptions
 from django.test import TestCase
 
 from restaurant import db_functions
-from restaurant.models import Location, SearchHistory
+from restaurant.models import Location, SearchHistory, Restaurant
 from restaurant.tests import helpers
 
 
@@ -87,3 +87,41 @@ class VisitFunctionTests(TestCase):
     def test_visit_history_returns_empty_for_user_with_no_history(self):
         history = db_functions.get_user_visit_history(self.user1)
         self.assertEquals(len(history), 0)
+
+
+class RestaurantFunctionTests(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='Death', email='reaper@grim.com', password='Muerte666')
+        self.location = Location.objects.create(city='Philadelphia')
+        self.portland = Location.objects.create(city='Portland')
+        self.search = SearchHistory.objects.create(user_id=self.user,
+                                                   location_id=self.portland,
+                                                   search_terms="vegan")
+
+    def test_restaurant_saved(self):
+        name = 'Pizza Brain'
+        restaurant_type = 'pizza'
+        price = '$'
+
+        result = db_functions.save_restaurant_selection(name, self.location,
+                                                        price, restaurant_type)
+        self.assertIsNotNone(result)
+
+        new_restaurant = Restaurant.objects.get(name=name)
+        self.assertIsNotNone(new_restaurant)
+
+    def test_db_integrity_error_is_caught_and_restaurant_not_saved(self):
+        name = 'Bad'
+        restaurant_type = 'french'
+        price = '$$$'
+
+        result = db_functions.save_restaurant_selection(name, None, price,
+                                                        restaurant_type)
+
+        self.assertIsNone(result)
+
+        count = Restaurant.objects.filter(name=name).count()
+        self.assertEquals(count, 0)
+
