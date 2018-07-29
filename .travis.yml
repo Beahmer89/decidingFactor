@@ -1,7 +1,10 @@
 language: python
 python:
-  - "3.5"
-  - "3.6"
+- '3.5'
+- '3.6'
 install:
-  - pip install -r requires/testing.txt -i https://pypi.org/simple/
+- pip install -r requires/testing.txt -i https://pypi.org/simple/
 script: python decidingFactor/manage.py test restaurant.tests
+env:
+  global:
+    secure: mUgrr6U2m1YGW6otSSc2XRYkmijaoDlKRGUSyiKbwzWhJ1/S/S3ueL+6xQ+PALsxrkgeomvmwr9S4rSXSAA2r5NfzdUxTe8icoJvfxq5ZfpCjG3RUyDGH7LY5SJvcxIhV5bGAOXKbYGK3r3SxD4pu7/c7/BoJMAu+fP+YpOPCUjJ0zo9RO2NgaVcc45E3PDw00XxT738f2tepqWwh4VYKf36KrN/YdPIfD7WypNNMdMJmVVDH4JRe4XmBtQinWWc2DhtM6sMxdZGZA5Lsl5lC8CUO6bwnC/i2X5STBMRNywqLnmaeZdaMfs9lY5eHTBucqorzMBvyMflb6Hg2vsqDQBQrDTvV4mbwSGwCTceEdVkLB5RpTD2EPMAPMr2Y2heOo1YhFgMDBiF/cxY57qnz/jb/mZCmouVJwcfzPsrlxH4Qs5hDpwBSmPNCfXlozwdOihlUjfBCGzedOh15rLpoa7wgwOAo/IGcI3saSlCamZnWIPTCqptzC7aEnk/Hvkac0rZAbCd1unMAbciKBkdbe1GGIm2+Qlnm9Vw7HGGMuBeKjXBh9CM6bHPe6LV8Fegd/N8tz5LiKMjaevz3p67Ay3CGACOZrlMy92MmsmGEZrNq9qna1RoFI3iUrYSwKeH8CgXSp0YVP1459uDeS7KSrKKCRdsSbt7mVwgoOnc/tU=
