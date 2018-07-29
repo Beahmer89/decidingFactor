@@ -6,27 +6,6 @@ from django.core import exceptions
 from restaurant import models
 
 
-def check_if_search_exists(user_id, search_location, terms):
-    """
-    Checks to see if user has used this search before. If they have the search
-    is returned and if not None is returned.
-
-    :param int user_id: logged in user id
-    :param str search_location: the area in which user is searching
-    :param str terms: string user entered to search for restaurants
-
-    :return: search object or None
-    """
-    try:
-        search = models.Location.objects.get(city=search_location,
-                                             searchhistory__user_id=user_id,
-                                             searchhistory__search_terms=terms)
-    except exceptions.ObjectDoesNotExist:
-        search = None
-
-    return search
-
-
 def save_search_form_info(user_id, search_location, terms):
     """
     Saves the search information that was used entered at the restaurant search
@@ -36,13 +15,16 @@ def save_search_form_info(user_id, search_location, terms):
     :param int user_id: logged in user id
     :param str search_location: the area in which user is searching
     :param str terms: string user entered to search for restaurants
+
+    :return: Dict of location object and search object
     """
     location, created = models.Location.objects.get_or_create(
         city=search_location)
 
-    search = models.SearchHistory(user_id=user_id, location_id=location,
-                                  search_terms=terms)
-    search.save()
+    search, created = models.SearchHistory.objects.get_or_create(
+        user_id=user_id, location_id=location, search_terms=terms)
+
+    return {'location': location, 'search': search}
 
 
 def save_restaurant_selection(name, location_id, price, restaurant_type):

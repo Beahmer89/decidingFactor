@@ -17,19 +17,31 @@ class SearchFunctionTests(TestCase):
                                      location_id=self.portland,
                                      search_terms="vegan pizza")
 
-    def test_search_doesnt_already_exist(self):
+    def test_search_history_created_for_term_not_already_existing(self):
         terms = "vegan"
         location = "Portland"
 
-        resp = db_functions.check_if_search_exists(self.user, location, terms)
-        self.assertIsNone(resp)
+        resp = db_functions.save_search_form_info(self.user, location, terms)
+        self.assertIsNotNone(resp['search'])
 
-    def test_search_already_exists(self):
+        searches = SearchHistory.objects.filter(user_id=self.user,
+                                                location_id=self.portland,
+                                                search_terms=terms).count()
+        self.assertEquals(searches, 1)
+
+    def test_search_term_already_exists(self):
         terms = "vegan pizza"
         location = "Portland"
 
-        resp = db_functions.check_if_search_exists(self.user, location, terms)
-        self.assertIsNotNone(resp)
+        searches_before = SearchHistory.objects.filter(
+            user_id=self.user, location_id=self.portland).count()
+
+        resp = db_functions.save_search_form_info(self.user, location, terms)
+        self.assertIsNotNone(resp['search'])
+
+        searches_after = SearchHistory.objects.filter(
+            user_id=self.user, location_id=self.portland).count()
+        self.assertEquals(searches_before, searches_after)
 
     def test_save_from_info_success(self):
         terms = "vegan"
