@@ -1,0 +1,7 @@
+language: pythong
+python:
+  - "3.5"
+  - "3.6"
+install:
+  - pip install -r pip install -r requires/testing.txt -i https://pypi.org/simple/
+script: python decidingFactor/manage.py test restaurant.tests
