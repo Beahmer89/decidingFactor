@@ -1,7 +1,6 @@
 import datetime
 
 from django import db
-from django.core import exceptions
 
 from restaurant import models
 
@@ -59,8 +58,9 @@ def get_user_visit_history(user_id):
     :return: VisitHistory object
     """
     return models.Restaurant.objects.filter(
-        visithistory__user_id=user_id).values('restaurant_type', 'name',
-                                              'visithistory__rating')
+        visithistory__user_id=user_id).values(
+            'restaurant_type', 'name', 'price', 'visithistory__rating',
+            'visithistory__last_visited').distinct()
 
 
 def save_visit_selection(user_id, search_id, restaurant_id, rating):
@@ -94,7 +94,7 @@ def save_visit_selection(user_id, search_id, restaurant_id, rating):
             search_id=search_id,
             restaurant_id=restaurant_id,
             rating=rating,
-            last_visted=datetime.datetime.now())
+            last_visited=datetime.datetime.now())
     except db.IntegrityError as error:
         return False
 
