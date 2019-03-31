@@ -25,11 +25,11 @@ class YelpTests(TestCase):
 
         self.assertIsNotNone(restaurants.get('businesses'))
 
-    def test_wrong_api_key_results_in_401(self):
+    def test_wrong_api_key_results_in_400(self):
         yelp_fail = YelpClient("fake_api_key")
 
         results = yelp_fail.find_businesses(location="Minnesota", term="tacos")
-        self.assertEquals(results.status_code, 401)
+        self.assertEquals(results.status_code, 400)
 
     def test_retrys_occur_on_423_level_error(self):
         with mock.patch('restaurant.mixins.yelp.YelpClient.SLEEP_DURATION',
