@@ -1,70 +1,70 @@
 
-  
+
 - model: restaurant.visithistory
   fields:
     rating: saved
     user_id: 1
     restaurant_id: 0fdab263-1c80-4d62-ad14-71504c020526
     search_id: 168e746d-dcfb-430c-8ba4-415430e867d3
-  
+
 - model: restaurant.visithistory
   fields:
     rating: saved
     user_id: 1
     restaurant_id: 3815cdd6-ef60-4504-91de-a940c354a4d5
     search_id: 168e746d-dcfb-430c-8ba4-415430e867d3
-  
+
 - model: restaurant.visithistory
   fields:
     rating: saved
     user_id: 1
     restaurant_id: cca1d450-4b23-4a56-8ea4-4708df979faf
     search_id: 168e746d-dcfb-430c-8ba4-415430e867d3
-  
+
 - model: restaurant.visithistory
   fields:
     rating: saved
     user_id: 1
     restaurant_id: 73ccc558-b593-48ab-808d-3f81d421b1b8
     search_id: a4f3d348-305f-4ae6-97be-8d01f41486d6
-  
+
 - model: restaurant.visithistory
   fields:
     rating: saved
     user_id: 1
     restaurant_id: ee41d494-cdd2-4c04-a3a2-bc2f5f4c3642
     search_id: a4f3d348-305f-4ae6-97be-8d01f41486d6
-  
+
 - model: restaurant.visithistory
   fields:
     rating: saved
     user_id: 1
     restaurant_id: 5638d608-e311-4a21-bd80-7d67fb5dec47
     search_id: a4f3d348-305f-4ae6-97be-8d01f41486d6
-  
+
 - model: restaurant.visithistory
   fields:
     rating: saved
     user_id: 1
     restaurant_id: 752b9bb0-f5e0-4d83-aa91-be42ae11b810
     search_id: 94508037-b97f-4965-b174-588fd2bb97d9
-  
+
 - model: restaurant.visithistory
   fields:
     rating: saved
     user_id: 1
     restaurant_id: d544ed4c-edcf-4f58-8eac-680d9511b934
     search_id: 94508037-b97f-4965-b174-588fd2bb97d9
-  
+
 - model: restaurant.visithistory
   fields:
     rating: saved
     user_id: 1
     restaurant_id: d95ea7ae-c624-427c-a15c-3fffa214fa68
     search_id: 94508037-b97f-4965-b174-588fd2bb97d9
-  
 
-  
+
+
 - model: restaurant.restaurant
   fields:
     name: V Street
@@ -72,7 +72,7 @@
     price: $$
     location_id: c18eed45-1b4d-4b7e-9a3a-7ca724d8b3b7
     restaurant_id: 0fdab263-1c80-4d62-ad14-71504c020526
-  
+
 - model: restaurant.restaurant
   fields:
     name: Vedge
@@ -80,7 +80,7 @@
     price: $$$
     location_id: c18eed45-1b4d-4b7e-9a3a-7ca724d8b3b7
     restaurant_id: 3815cdd6-ef60-4504-91de-a940c354a4d5
-  
+
 - model: restaurant.restaurant
   fields:
     name: Vegan Commissary
@@ -88,7 +88,7 @@
     price: $$
     location_id: c18eed45-1b4d-4b7e-9a3a-7ca724d8b3b7
     restaurant_id: cca1d450-4b23-4a56-8ea4-4708df979faf
-  
+
 - model: restaurant.restaurant
   fields:
     name: Little Nonna&#39;s
@@ -96,7 +96,7 @@
     price: $$
     location_id: c18eed45-1b4d-4b7e-9a3a-7ca724d8b3b7
     restaurant_id: 73ccc558-b593-48ab-808d-3f81d421b1b8
-  
+
 - model: restaurant.restaurant
   fields:
     name: L&#39;Angolo Ristorante
@@ -104,7 +104,7 @@
     price: $$
     location_id: c18eed45-1b4d-4b7e-9a3a-7ca724d8b3b7
     restaurant_id: ee41d494-cdd2-4c04-a3a2-bc2f5f4c3642
-  
+
 - model: restaurant.restaurant
   fields:
     name: Gran Caffe L&#39;Aquila
@@ -112,7 +112,7 @@
     price: $$
     location_id: c18eed45-1b4d-4b7e-9a3a-7ca724d8b3b7
     restaurant_id: 5638d608-e311-4a21-bd80-7d67fb5dec47
-  
+
 - model: restaurant.restaurant
   fields:
     name: Secret Sauce Burger
@@ -120,7 +120,7 @@
     price: None
     location_id: 60b492a1-3c1e-4e77-b310-347310181a5e
     restaurant_id: 752b9bb0-f5e0-4d83-aa91-be42ae11b810
-  
+
 - model: restaurant.restaurant
   fields:
     name: Blossoming Lotus
@@ -128,7 +128,7 @@
     price: $$
     location_id: 60b492a1-3c1e-4e77-b310-347310181a5e
     restaurant_id: d544ed4c-edcf-4f58-8eac-680d9511b934
-  
+
 - model: restaurant.restaurant
   fields:
     name: Off The Griddle
@@ -136,49 +136,49 @@
     price: $$
     location_id: 60b492a1-3c1e-4e77-b310-347310181a5e
     restaurant_id: d95ea7ae-c624-427c-a15c-3fffa214fa68
-  
 
-  
+
+
 - model: restaurant.searchhistory
   fields:
     search_id: 168e746d-dcfb-430c-8ba4-415430e867d3
     search_terms: vegan
     location_id: c18eed45-1b4d-4b7e-9a3a-7ca724d8b3b7
     user_id: 1
-  
+
 - model: restaurant.searchhistory
   fields:
     search_id: a4f3d348-305f-4ae6-97be-8d01f41486d6
     search_terms: italian
     location_id: c18eed45-1b4d-4b7e-9a3a-7ca724d8b3b7
     user_id: 1
-  
+
 - model: restaurant.searchhistory
   fields:
     search_id: 94508037-b97f-4965-b174-588fd2bb97d9
     search_terms: vegan
     location_id: 60b492a1-3c1e-4e77-b310-347310181a5e
     user_id: 1
-  
 
-  
+
+
 - model: restaurant.location
   fields:
     location_id: c18eed45-1b4d-4b7e-9a3a-7ca724d8b3b7
     city: philadelphia
-  
+
 - model: restaurant.location
   fields:
     location_id: 60b492a1-3c1e-4e77-b310-347310181a5e
     city: portland
-  
 
-  
+
+
 - model: auth.user
   fields:
     password: testing
     id: 1
     username: test
     email: reaper@grim.com
-  
+
 
